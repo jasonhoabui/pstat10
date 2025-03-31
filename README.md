@@ -1,1 +1,1 @@
-## pstat10 with dawn holmes. intro to r and sql!
+pstat10 with dawn holmes. intro to r and sql!
