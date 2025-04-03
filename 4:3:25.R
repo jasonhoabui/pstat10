@@ -8,8 +8,9 @@ length(x)
 # question 2
 y <- c(rep(6, 7))
 y
-z <- c(rep(3, 3))
+z <- c(rep(3, 3), rep(4, 3), rep(6, 3))
 z
+
 
 # question 3
 p <- c(2,3,4,6,6)
@@ -24,3 +25,4 @@ x <- c(-50:-54, -53:-50)
 
 # question 5
 x <- c(rep(1, 2), rep(2, 2), rep(3, 1))
+rep(1:3,each=2,length=5) # faster solution
