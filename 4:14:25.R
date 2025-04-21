@@ -2,7 +2,7 @@ x <- c(1:9)
 y <- c(1:12)
 z <- c(1:15)
 
-my_list(x,y,z)
+my_list <- list(x,y,z)
 
 lapply(my_list, sum)
 sapply(my_list, sum)
@@ -13,7 +13,7 @@ rm(state.division)
 rm(state.region)
 rm(state.x77)
 
-isvector(state.area)
+is.vector(state.area)
 state.area
 
 smallstate <- state.area < 10000
@@ -25,7 +25,7 @@ largestate <- state.area > 100000
 largestate
 sum(largestate)
 
-sum(SmallState | LargeState)
+sum(smallstate | largestate)
 
 state.name
 which(state.name == "Alaska")
