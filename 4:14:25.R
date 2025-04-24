@@ -3,7 +3,7 @@ y <- c(1:12)
 z <- c(1:15)
 
 my_list <- list(x,y,z)
-
+my_list
 lapply(my_list, sum)
 sapply(my_list, sum)
 
