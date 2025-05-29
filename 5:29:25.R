@@ -16,6 +16,15 @@ SALES_ORDER_LINE <- read.csv("SALES_ORDER_LINE.txt")
 STOCK_TOTAL <- read.csv("STOCK_TOTAL.txt")
 
 PSTAT10db <- dbConnect(RSQLite::SQLite(), "PSTAT10-db.sqlite")
+dbWriteTable(PSTAT10db, "CUSTOMER", CUSTOMER)
+dbWriteTable(PSTAT10db, "DEPARTMENT", DEPARTMENT)
+dbWriteTable(PSTAT10db, "EMPLOYEE", EMPLOYEE)
+dbWriteTable(PSTAT10db, "EMPLOYEE_PHONE", EMPLOYEE_PHONE)
+dbWriteTable(PSTAT10db, "INVOICES", INVOICES)
+dbWriteTable(PSTAT10db, "PRODUCT", PRODUCT)
+dbWriteTable(PSTAT10db, "SALES_ORDER", SALES_ORDER)
+dbWriteTable(PSTAT10db, "SALES_ORDER_LINE", SALES_ORDER_LINE)
+dbWriteTable(PSTAT10db, "STOCK_TOTAL", STOCK_TOTAL)
 dbListTables(PSTAT10db)
 
 # question 1
