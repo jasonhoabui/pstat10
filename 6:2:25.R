@@ -1,0 +1,150 @@
+PSTAT10db <- dbConnect(RSQLite::SQLite(), "PSTAT10-db.sqlite")
+dbRemoveTable(PSTAT10db, "ALEX_PREFERENCES")
+
+dbGetQuery(PSTAT10db,'SELECT * FROM CUSTOMER')
+
+ALEX_PREFERENCES <- dbGetQuery(PSTAT10db, 'SELECT C.CUST_NO, C.NAME AS
+Customer_Name,
+P.NAME AS Product_Name, COLOR AS Required_Color
+FROM CUSTOMER C, SALES_ORDER_LINE O, SALES_ORDER S, PRODUCT P
+WHERE C.CUST_NO = "C1"
+AND C.CUST_NO = S.CUST_NO
+AND S.ORDER_NO = O.ORDER_NO
+AND O.PROD_NO = P.PROD_NO')
+
+dbListTables(PSTAT10db)
+
+is.data.frame(ALEX_PREFERENCES)
+
+dbWriteTable(PSTAT10db, "ALEX_PREFERENCES", ALEX_PREFERENCES, overwrite=TRUE)
+
+dbListTables(PSTAT10db)
+
+
+dbGetQuery(PSTAT10db,'SELECT * FROM PRODUCT')
+dbSendStatement(PSTAT10db, 'INSERT INTO PRODUCT VALUES ("p6", "SOCKS", "GREEN")')
+
+dbReadTable(PSTAT10db, "PRODUCT")
+
+dbSendStatement(PSTAT10db, 'DELETE FROM PRODUCT WHERE PROD_NO ="p6"')
+
+dbSendStatement(PSTAT10db, 'INSERT INTO CUSTOMER
+VALUES ("C7", "Ann", "Mesa")')
+dbReadTable(PSTAT10db, "CUSTOMER")
+
+dbGetQuery(PSTAT10db,'SELECT * FROM CUSTOMER')
+
+
+
+dbListTables(PSTAT10db)
+dbRemoveTable(PSTAT10db,"TOY_SUPPLIER")
+dbRemoveTable(PSTAT10db,"SOFT_TOYS")
+
+dbSendQuery(PSTAT10db, 'CREATE TABLE SOFT_TOYS
+(Toy_ID TEXT NOT NULL PRIMARY KEY,
+Toy_Name TEXT,
+Color TEXT,
+Price REAL,
+CHECK (length("Toy_ID") <= 4)
+)')
+
+dbSendQuery(PSTAT10db, 'PRAGMA foreign_keys = ON')
+
+dbSendQuery(PSTAT10db, 'CREATE TABLE TOY_SUPPLIER
+(Supplier_ID TEXT NOT NULL PRIMARY KEY,
+Supplier_name TEXT,
+Toy_ID TEXT,
+FOREIGN KEY (Toy_ID) REFERENCES SOFT_TOYS
+)')
+
+dbListTables(PSTAT10db)
+dbGetQuery(PSTAT10db,'SELECT * FROM SOFT_TOYS')
+dbGetQuery(PSTAT10db,'SELECT * FROM TOY_SUPPLIER')
+
+dbGetQuery(PSTAT10db,'PRAGMA foreign_key_list("TOY_SUPPLIER")')
+dbGetQuery(PSTAT10db,'PRAGMA table_info("SOFT_TOYS")')
+dbGetQuery(PSTAT10db,'PRAGMA table_info("TOY_SUPPLIER")')
+
+dbListTables(PSTAT10db)
+
+dbGetQuery(PSTAT10db,'SELECT * FROM SOFT_TOYS')
+
+dbSendStatement(PSTAT10db, 'INSERT INTO SOFT_TOYS
+VALUES (007, "BEAR", "BLUE", 5.99)')
+
+dbGetQuery(PSTAT10db,'SELECT * FROM SOFT_TOYS')
+
+dbSendStatement(PSTAT10db, 'INSERT INTO TOY_SUPPLIER
+VALUES ("101", "Macy", 007)')
+
+dbGetQuery(PSTAT10db, 'SELECT * FROM TOY_SUPPLIER')
+
+dbGetQuery(PSTAT10db, 'SELECT COLOR FROM SOFT_TOYS')
+
+dbSendStatement(conn = PSTAT10db, 'INSERT INTO SOFT_TOYS
+VALUES ( 007, "BEAR", "BLUE", 5.99)')
+
+dbRemoveTable(PSTAT10db, "iris")
+dbListTables(PSTAT10db)
+
+
+
+dbWriteTable(PSTAT10db, "mtcarS", mtcars, overwrite=TRUE)
+result_in_batches <- dbSendQuery(PSTAT10db, 'SELECT mpg FROM mtcars')
+dbFetch(result_in_batches, n=10)
+
+dbGetRowCount(result_in_batches)
+dbClearResult(result_in_batches)
+
+
+
+dbGetQuery(PSTAT10db, 'SELECT * FROM EMPLOYEE')
+dbGetQuery(PSTAT10db, 'SELECT MAX(AGE), DEPT_NO FROM EMPLOYEE WHERE DEPT_NO =
+"D1"')
+dbGetQuery(PSTAT10db, 'SELECT MAX(AGE) FROM EMPLOYEE WHERE DEPT_NO = "D1"')
+
+dbGetQuery(PSTAT10db, 'SELECT NAME, EMP_NO FROM EMPLOYEE
+WHERE AGE >
+(SELECT MAX(AGE) FROM EMPLOYEE WHERE DEPT_NO = "D1")')
+
+
+
+dbSendStatement(PSTAT10db, 'CREATE VIEW FIRSTVIEW AS
+SELECT NAME FROM PRODUCT')
+dbGetQuery(PSTAT10db,'SELECT * FROM FIRSTVIEW')
+
+dbSendStatement(PSTAT10db, 'DROP VIEW FIRSTVIEW')
+dbListTables(PSTAT10db)
+
+dbGetQuery(PSTAT10db, 'SELECT * FROM EMPLOYEE')
+dbGetQuery(PSTAT10db, 'SELECT * FROM DEPARTMENT')
+
+dbGetQuery(PSTAT10db, 'SELECT EMPLOYEE.EMP_NO, EMPLOYEE.NAME,
+DEPARTMENT.MANAGER
+FROM EMPLOYEE INNER JOIN DEPARTMENT WHERE EMPLOYEE.EMP_NO =
+DEPARTMENT.MANAGER')
+
+another_view <- dbSendQuery(conn = PSTAT10db, 'CREATE VIEW SECONDVIEW AS
+SELECT EMPLOYEE.EMP_NO,
+EMPLOYEE.NAME, DEPARTMENT.MANAGER
+FROM EMPLOYEE JOIN DEPARTMENT
+WHERE EMPLOYEE.DEPT_NO = DEPARTMENT.DEPT_NO')
+dbClearResult(another_view)
+
+dbGetQuery(PSTAT10db, 'SELECT * FROM SECONDVIEW')
+
+dbSendStatement(conn=PSTAT10db, 'DROP VIEW FIRSTVIEW')
+dbSendStatement(conn=PSTAT10db, 'DROP VIEW SECONDVIEW')
+
+
+
+dbGetQuery(PSTAT10db,'SELECT * FROM CUSTOMER')
+
+DEL_ALEX <- dbSendStatement(PSTAT10db, 'DELETE FROM CUSTOMER
+WHERE NAME="ALEX"')
+dbGetRowsAffected(DEL_ALEX)
+
+dbGetQuery(PSTAT10db, 'SELECT * FROM CUSTOMER')
+
+dbWriteTable(PSTAT10db, "CUSTOMER", CUSTOMER, overwrite=TRUE)
+dbGetQuery(PSTAT10db, 'SELECT * FROM CUSTOMER')
